@@ -37,8 +37,6 @@ type Boss struct {
 	Name         string
 	Hp           uint8
 	BombTimer    uint8
-	FreezeTime   uint8
-	FreezeCD     uint8
 	HellfireCD   uint8
 	Bomb         bool
 	Frozen       bool
@@ -51,8 +49,6 @@ func createBoss() Boss {
 		Name:         "Undead Wizard",
 		Hp:           200,
 		BombTimer:    0,
-		FreezeTime:   0,
-		FreezeCD:     0,
 		HellfireCD:   0,
 		Bomb:         false,
 		Frozen:       false,
@@ -1178,13 +1174,17 @@ func (p *Player) flamingOrb(l uint8, b BadGuys) {
 
 // FREEZE
 func (p *Player) freeze(b BadGuys) {
+	if _, ok := b.(*Boss); ok {
+		fmt.Println(b.getName() + " IS FROZEN FOR 2 TURNS")
+		time.Sleep(1750 * time.Millisecond)
+		b.freeze()
+		p.FreezeTime = 2
+		p.FreezeCD = 5
+		return
+	}
 	fmt.Println(b.getName() + " IS FROZEN FOR 1 TURN")
 	time.Sleep(1750 * time.Millisecond)
 	b.freeze()
-	if boss, ok := b.(*Boss); ok {
-		boss.FreezeTime = 2
-		boss.FreezeCD = 5
-	}
 	p.FreezeTime = 1
 	p.FreezeCD = 4
 }
@@ -1367,8 +1367,8 @@ func (p *Player) hellfireDarkSim(b BadGuys) {
 	time.Sleep(1650 * time.Millisecond)
 	fmt.Println("--- " + p.Name + " CASTS HELLFIRE ---")
 	time.Sleep(1650 * time.Millisecond)
-	fmt.Println(p.getName() + " IS SCORCHED FOR 10 DMG")
-	p.takeDmg(10)
+	fmt.Println(b.getName() + " IS SCORCHED FOR 10 DMG")
+	b.takeDmg(10)
 	b.setHellfire()
 }
 
@@ -1778,7 +1778,7 @@ func enemyCount(e []Enemy) uint8 {
 }
 
 func main() {
-	var enemies [5]Enemy
+	/*var enemies [5]Enemy
 
 	for i := 0; i < 5; i++ {
 		enemies[i] = createEnemy()
@@ -1787,12 +1787,12 @@ func main() {
 	for i := 0; i < len(enemies); i++ {
 		fmt.Println(enemies[i].getName() + " SPAWNS")
 		time.Sleep(1150 * time.Millisecond)
-	}
+	}*/
 
 	p := createPlayer()
 
 	// NORMAL ENEMIES GAME LOOP
-	for i := 0; i < len(enemies); i++ {
+	/*for i := 0; i < len(enemies); i++ {
 
 		// CURRENT ENEMY COUNT
 		ec := enemyCount(enemies[i:])
@@ -1853,9 +1853,10 @@ func main() {
 
 			time.Sleep(1950 * time.Millisecond)
 		}
-		fmt.Println("=== ALL ENEMIES DEFEATED ===")
-		time.Sleep(1550 * time.Millisecond)
-	}
+	}*/
+
+	fmt.Println("=== ALL ENEMIES DEFEATED ===")
+	time.Sleep(1550 * time.Millisecond)
 
 	fmt.Println("*** HEALED FOR FULL HP ***")
 	p.heal(100)
