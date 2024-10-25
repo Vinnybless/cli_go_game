@@ -1778,7 +1778,7 @@ func enemyCount(e []Enemy) uint8 {
 }
 
 func main() {
-	/*var enemies [5]Enemy
+	var enemies [5]Enemy
 
 	for i := 0; i < 5; i++ {
 		enemies[i] = createEnemy()
@@ -1787,12 +1787,12 @@ func main() {
 	for i := 0; i < len(enemies); i++ {
 		fmt.Println(enemies[i].getName() + " SPAWNS")
 		time.Sleep(1150 * time.Millisecond)
-	}*/
+	}
 
 	p := createPlayer()
 
 	// NORMAL ENEMIES GAME LOOP
-	/*for i := 0; i < len(enemies); i++ {
+	for i := 0; i < len(enemies); i++ {
 
 		// CURRENT ENEMY COUNT
 		ec := enemyCount(enemies[i:])
@@ -1853,7 +1853,7 @@ func main() {
 
 			time.Sleep(1950 * time.Millisecond)
 		}
-	}*/
+	}
 
 	fmt.Println("=== ALL ENEMIES DEFEATED ===")
 	time.Sleep(1550 * time.Millisecond)
